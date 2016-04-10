@@ -2,9 +2,11 @@
 #include "globals.hpp"
 #include <SFML/Graphics.hpp>
 
+#include "../states/gameState.hpp"
+
 void game::initializeWindow()
     {
-        app = new sf::RenderWindow(sf::VideoMode(1200, 700), "GameName", sf::Style::Close);
+        app = new sf::RenderWindow(sf::VideoMode(1170, 700), "Breakout", sf::Style::Close);
         app->setFramerateLimit(60.0f);
     }
 
@@ -25,6 +27,7 @@ void game::initialize()
         initializeControls();
 
         globals::_stateMachine.setWindow(app);
+        globals::_stateMachine.queueState(new gameState);
     }
 
 void game::cleanup()

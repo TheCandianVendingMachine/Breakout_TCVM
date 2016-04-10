@@ -22,10 +22,7 @@ class state
         public:
             state() = default;
 
-            virtual void render() = 0;
-            virtual void update(sf::Time deltaTime) = 0;
-
-            /* 
+            /*
             *  This is called to initialize anything that needs to be initialized once the
             *  state is pushed onto the stack
             *  The following should be initialized in the constructor
@@ -37,6 +34,9 @@ class state
             *  Everything else should be initialized in the initialize function
             */
             virtual void initialize() = 0;
+
+            virtual void render() = 0;
+            virtual void update(sf::Time deltaTime) = 0;
 
             const states getState() const;
 
