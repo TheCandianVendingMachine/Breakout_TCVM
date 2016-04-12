@@ -18,7 +18,7 @@ void gameWorld::update(sf::Time deltaTime)
             {
                 if (i + 1 < _entities.size())
                     {
-                        _entities[i]->collide(_entities[i + 1]->getSprite()->getGlobalBounds());
+                        _entities[i]->collide(*_entities[i + 1]);
                     }
 
                 _entities[i]->update(deltaTime);

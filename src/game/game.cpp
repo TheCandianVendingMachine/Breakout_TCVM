@@ -14,7 +14,10 @@ void game::initializeSounds()
     {}
 
 void game::initializeTextures()
-    {}
+    {
+        globals::_textureManager.add("assets/textures/block.png", "blockTexture");
+        globals::_textureManager.add("assets/textures/ball.png", "ballTexture");
+    }
 
 void game::initializeControls()
     {}

@@ -10,6 +10,6 @@ class block : public entity
             block();
 
             void update(sf::Time deltaTime);
-            bool collide(sf::FloatRect other);
+            bool collide(entity &other);
 
     };

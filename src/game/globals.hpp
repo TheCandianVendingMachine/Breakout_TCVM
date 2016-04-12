@@ -9,12 +9,16 @@
 
 #include "../managers/input/inputManager.hpp"
 
+#include "../managers/eventManager.hpp"
+
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
 class globals
     {
         public:
+            static eventManager _eventManager;
+
             static stateMachine _stateMachine;
 
             static resourceManager<sf::Texture> _textureManager;

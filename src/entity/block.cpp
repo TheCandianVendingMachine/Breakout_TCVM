@@ -3,13 +3,13 @@
 
 block::block()
     {
-        _sprite.setTexture(*globals::_textureManager.add("assets/textures/block.png", "blockTexture"));
+        _sprite.setTexture(*globals::_textureManager.get("blockTexture"));
     }
 
 void block::update(sf::Time deltaTime)
     {}
 
-bool block::collide(sf::FloatRect other)
+bool block::collide(entity &other)
     {
-    return false;
+        return false;
     }

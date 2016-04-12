@@ -16,6 +16,11 @@ void entity::setPosition(float X, float Y)
         _sprite.setPosition(X, Y);
     }
 
+const entity::entityID entity::getID() const
+    {
+        return _id;
+    }
+
 sf::Vector2f entity::getPosition()
     {
         return _sprite.getPosition();

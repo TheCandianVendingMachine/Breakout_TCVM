@@ -1,5 +1,7 @@
 #include "globals.hpp"
 
+eventManager globals::_eventManager;
+
 stateMachine globals::_stateMachine;
 states globals::_gameStates;
 
