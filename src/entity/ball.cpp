@@ -1,7 +1,7 @@
 #include "ball.hpp"
 #include "../game/globals.hpp"
 
-ball::ball(sf::Vector2u windowSize) : _speed(400.f)
+ball::ball(sf::Vector2u windowSize) : _speed(50.f)
     {
         _sprite.setTexture(*globals::_textureManager.get("ballTexture"));
         _sprite.setOrigin(_sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2);
@@ -34,20 +34,20 @@ void ball::update(sf::Time deltaTime)
             }
     }
 
-bool ball::collide(entity &otherSprite)
+bool ball::collide(entity *otherSprite)
     {
-        auto other = *otherSprite.getSprite();
+        auto other = otherSprite->getSprite();
 
         sf::Vector2f centerFirst(_sprite.getPosition().x + (_sprite.getLocalBounds().width / 2),
                                  _sprite.getPosition().y + (_sprite.getLocalBounds().height / 2));
 
-        sf::Vector2f centerSecond(other.getPosition().x + (other.getLocalBounds().width / 2),
-                                  other.getPosition().y + (other.getLocalBounds().height / 2));
+        sf::Vector2f centerSecond(other->getPosition().x + (other->getLocalBounds().width / 2),
+                                  other->getPosition().y + (other->getLocalBounds().height / 2));
 
 
         sf::Vector2f distance(centerFirst - centerSecond);
-        sf::Vector2f minDistance((_sprite.getLocalBounds().width / 2) + (other.getLocalBounds().width / 2),
-                                 (_sprite.getLocalBounds().height / 2) + (other.getLocalBounds().height / 2));
+        sf::Vector2f minDistance((_sprite.getLocalBounds().width / 2) + (other->getLocalBounds().width / 2),
+                                 (_sprite.getLocalBounds().height / 2) + (other->getLocalBounds().height / 2));
 
         // if ball collides with a sprite, bounce off
         if (abs(distance.x) < minDistance.x && abs(distance.y) < minDistance.y)
@@ -72,9 +72,9 @@ bool ball::collide(entity &otherSprite)
                         _sprite.setPosition(_sprite.getPosition().x + overlap.x, _sprite.getPosition().y);
                     }
 
-                if (otherSprite.getID() == BLOCK)
+                if (otherSprite->getEntityID() == BLOCK)
                     {
-                        globals::_eventManager.alert(eventData(0, BALL_HIT_BLOCK));
+                        globals::_eventManager.alert(eventData(otherSprite->getID(), BALL_HIT_BLOCK));
                     }
 
                 return true;

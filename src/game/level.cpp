@@ -1,13 +1,38 @@
 #include "level.hpp"
-#include "../entity/block.hpp"
 #include <fstream>
 
+#include "../entity/block.hpp"
 #include "../utilities/strFuncs.hpp"
+#include "../game/globals.hpp"
+
+void level::onAlert(eventData data)
+	{
+		for (auto &ent : _blocks)
+			{
+				switch (data._dataType)
+					{
+						case UNSIGNED_INT:
+							{
+								auto it = std::find_if(_blocks.begin(), _blocks.end(),
+									[data](entity *ent) { return ent->getID() == data._data.unsignedIntData; });
+								if (it != _blocks.end())
+									{
+										dynamic_cast<block*>((*it))->setAlive(false);
+									}
+							}
+						break;
+						default:
+							break;
+					}
+			}
+	}
 
 level::level(unsigned int blockSizeX, unsigned int blockSizeY)
     {
         _blockSizeX = blockSizeX;
         _blockSizeY = blockSizeY;
+
+		globals::_eventManager.subscribe(this, BALL_HIT_BLOCK);
     }
 
 void level::load(const std::string &levelFilePath)
@@ -86,6 +111,8 @@ void level::cleanup()
                 delete block;
                 block = nullptr;
             }
+
+		globals::_eventManager.unsubscribe(this, BALL_HIT_BLOCK);
     }
 
 level::~level()

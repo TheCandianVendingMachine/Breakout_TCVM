@@ -10,11 +10,17 @@
 #include "level.hpp"
 
 class entity;
+class ball;
+class player;
 
 class gameWorld
     {
         private:
             level _level;
+
+			ball *_ball;
+			player *_player;
+
             std::vector<entity*> _entities;
 
         public:
@@ -22,4 +28,7 @@ class gameWorld
 
             void update(sf::Time deltaTime);
             void render(sf::RenderWindow &app);
+
+			void cleanup();
+			~gameWorld();
     };

@@ -18,7 +18,7 @@ namespace
                 INTEGER,
                 FLOAT,
                 DOUBLE,
-                STRING,
+                UNSIGNED_INT,
             };
     }
 
@@ -38,6 +38,7 @@ struct eventData
         events _event;
 
         eventData(int data, events event) { _data.intDat = data, _dataType = INTEGER; _event = event; }
+		eventData(unsigned int data, events event) { _data.intDat = data, _dataType = UNSIGNED_INT; _event = event; }
         eventData(float data, events event) { _data.doubleDat = data, _dataType = DOUBLE;_event = event; }
         eventData(double data, events event) { _data.floatDat = data, _dataType = FLOAT;_event = event; }
 

@@ -17,17 +17,23 @@ class entity
 
         protected:
             sf::Sprite _sprite;
-            entityID _id;
+
+            entityID _entID;
+			const unsigned int _ID;
+
+			static unsigned int _allIDs;
 
         public:
+			entity();
+
             virtual void draw(sf::RenderTarget &target);
             virtual void update(sf::Time deltaTime) = 0;
-            virtual bool collide(entity &other) = 0;
 
             void setPosition(sf::Vector2f pos);
             void setPosition(float X, float Y);
 
-            const entityID getID() const;
+            const entityID getEntityID() const;
+			const unsigned int getID() const;
 
             sf::Vector2f getPosition();
             sf::Sprite *getSprite();

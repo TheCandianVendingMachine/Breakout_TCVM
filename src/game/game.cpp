@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "globals.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "../states/gameState.hpp"
 

@@ -17,6 +17,6 @@ class ball : public moveableEntity
             void initialize(sf::Vector2f impulse);
 
             void update(sf::Time deltaTime);
-            bool collide(entity &other);
+            bool collide(entity *otherSprite);
 
     };
