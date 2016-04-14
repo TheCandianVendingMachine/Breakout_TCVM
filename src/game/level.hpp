@@ -10,25 +10,25 @@
 
 #include "../managers/observer.hpp"
 
-class entity;
+class block;
 
 class level : public observer
     {
         private:
-            std::vector<entity*> _blocks;
+            std::vector<block*> _blocks;
 
             unsigned int _blockSizeX;
             unsigned int _blockSizeY;
 
-			void onAlert(eventData data);
-
         public:
-            level() = default;
+            level();
             level(unsigned int blockSizeX, unsigned int blockSizeY);
 
             void load(const std::string &levelFilePath);
 
-            std::vector<entity*> *getBlocks();
+            std::vector<block*> *getBlocks();
+
+			void alert(eventData data);
 
             void cleanup();
             ~level();

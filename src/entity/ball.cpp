@@ -74,7 +74,7 @@ bool ball::collide(entity *otherSprite)
 
                 if (otherSprite->getEntityID() == BLOCK)
                     {
-                        globals::_eventManager.alert(eventData(otherSprite->getID(), BALL_HIT_BLOCK));
+                        globals::_eventManager.alert(eventData(static_cast<int>(otherSprite->getID()), BALL_HIT_BLOCK));
                     }
 
                 return true;

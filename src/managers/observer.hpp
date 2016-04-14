@@ -6,10 +6,8 @@
 
 class observer
     {
-        protected:
-            virtual void onAlert(eventData _data) = 0;
-
         public:
-            void alert(eventData _data);
+            virtual void alert(eventData _data) = 0;
+			virtual ~observer() {}
 
     };

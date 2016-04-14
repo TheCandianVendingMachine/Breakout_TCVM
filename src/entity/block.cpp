@@ -6,6 +6,11 @@
 block::block()
     {
         _sprite.setTexture(*globals::_textureManager.get("blockTexture"));
+		_sprite.setColor(sf::Color::Red);
+		if (_ID % 2 == 0)
+			{
+				_sprite.setColor(sf::Color::Blue);
+			}
 		_entID = BLOCK;
     }
 

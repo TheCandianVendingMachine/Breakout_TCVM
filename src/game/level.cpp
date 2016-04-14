@@ -5,26 +5,10 @@
 #include "../utilities/strFuncs.hpp"
 #include "../game/globals.hpp"
 
-void level::onAlert(eventData data)
+level::level()
 	{
-		for (auto &ent : _blocks)
-			{
-				switch (data._dataType)
-					{
-						case UNSIGNED_INT:
-							{
-								auto it = std::find_if(_blocks.begin(), _blocks.end(),
-									[data](entity *ent) { return ent->getID() == data._data.unsignedIntData; });
-								if (it != _blocks.end())
-									{
-										dynamic_cast<block*>((*it))->setAlive(false);
-									}
-							}
-						break;
-						default:
-							break;
-					}
-			}
+		_blockSizeX = 0;
+		_blockSizeY = 0;
 	}
 
 level::level(unsigned int blockSizeX, unsigned int blockSizeY)
@@ -98,10 +82,32 @@ void level::load(const std::string &levelFilePath)
             }
     }
 
-std::vector<entity*> *level::getBlocks()
+std::vector<block*> *level::getBlocks()
     {
         return &_blocks;
     }
+
+void level::alert(eventData data)
+	{
+		for (auto &ent : _blocks)
+			{
+				switch (data._dataType)
+					{
+						case INTEGER:
+							{
+								auto it = std::find_if(_blocks.begin(), _blocks.end(),
+									[data](block *ent) { return ent->getID() == data._data.intDat; });
+								if (it != _blocks.end())
+									{
+										(*it)->setAlive(false);
+									}
+							}
+							break;
+						default:
+							break;
+					}
+			}
+	}
 
 
 void level::cleanup()
@@ -117,5 +123,5 @@ void level::cleanup()
 
 level::~level()
     {
-        cleanup();
+        //cleanup();
     }

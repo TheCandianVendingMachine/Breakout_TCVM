@@ -16,7 +16,7 @@ class player;
 class gameWorld
     {
         private:
-            level _level;
+            level *_level;
 
 			ball *_ball;
 			player *_player;

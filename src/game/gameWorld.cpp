@@ -1,5 +1,6 @@
 #include "gameWorld.hpp"
 #include "../entity/entity.hpp"
+#include "../entity/block.hpp"
 #include "../entity/ball.hpp"
 
 #include <algorithm>
@@ -8,13 +9,8 @@
 
 gameWorld::gameWorld()
     {
-        _level = level(64, 32);
-        _level.load("assets/levels/level_01.txt");
-
-        for (auto &block : *_level.getBlocks())
-            {
-                _entities.push_back(block);
-            }
+        _level = new level(64, 32);
+        _level->load("assets/levels/level_01.txt");
 
 		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
 		_ball->initialize(sf::Vector2f(0, -50));
@@ -30,13 +26,16 @@ void gameWorld::update(sf::Time deltaTime)
     {
         for (auto &ent : _entities)
             {
-				if (ent->getID() != _ball->getID())
-					{
-						_ball->collide(ent);
-					}
-
                 ent->update(deltaTime);
             }
+
+		for (auto &block : *_level->getBlocks())
+			{
+				if (block->getAlive()) 
+					{
+						_ball->collide(block);
+					}
+			}
     }
 
 void gameWorld::render(sf::RenderWindow &app)
@@ -45,6 +44,11 @@ void gameWorld::render(sf::RenderWindow &app)
             {
                 ent->draw(app);
             }
+
+		for (auto &block : *_level->getBlocks())
+			{
+				block->draw(app);
+			}
     }
 
 void gameWorld::cleanup()
@@ -59,6 +63,13 @@ void gameWorld::cleanup()
 			{
 				delete _player;
 				_player = nullptr;
+			}
+
+		if (_level)
+			{
+				_level->cleanup();
+				delete _level;
+				_level = nullptr;
 			}
 	}
 
