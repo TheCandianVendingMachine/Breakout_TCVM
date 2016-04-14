@@ -1,6 +1,7 @@
 #include "gameWorld.hpp"
 #include "../entity/entity.hpp"
 #include "../entity/block.hpp"
+#include "../entity/player.hpp"
 #include "../entity/ball.hpp"
 
 #include <algorithm>
@@ -16,7 +17,9 @@ gameWorld::gameWorld()
 		_ball->initialize(sf::Vector2f(0, -50));
 		_ball->setPosition(globals::_stateMachine.getWindow()->getSize().x / 2, globals::_stateMachine.getWindow()->getSize().y);
 
-		_player = nullptr;
+		_player = new player(globals::_stateMachine.getWindow()->getSize(), sf::Vector2f(0, 0));
+
+		_entities.push_back(_player);
 		_entities.push_back(_ball);
 
 		std::sort(_entities.begin(), _entities.end(), [](entity *entOne, entity *entTwo) {return entOne->getID() < entTwo->getID(); });
