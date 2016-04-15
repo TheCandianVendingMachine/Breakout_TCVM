@@ -1,9 +1,9 @@
 #include "ball.hpp"
 #include "../game/globals.hpp"
 
-ball::ball(sf::Vector2u windowSize) : _speed(50.f)
+ball::ball(sf::Vector2u windowSize) : _speed(200.f)
     {
-        _sprite.setTexture(*globals::_textureManager.get("ballTexture"));
+        _sprite.setTexture(*globals::_textureManager.get("ballTexture", true));
         _sprite.setOrigin(_sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2);
 
         _windowSize = windowSize;
@@ -23,7 +23,7 @@ void ball::update(sf::Time deltaTime)
         auto spritePos = _sprite.getPosition();
         auto spriteBound = _sprite.getLocalBounds();
         // If the ball is hitting the edge of the window, bounce off
-        if (spritePos.x + (spriteBound.width / 2) >= _windowSize.x, spritePos.x - (spriteBound.width / 2) <= 0)
+        if (spritePos.x + (spriteBound.width / 2) >= _windowSize.x || spritePos.x - (spriteBound.width / 2) <= 0)
             {
                 _impulse.x = -_impulse.x;
             }
@@ -38,11 +38,14 @@ bool ball::collide(entity *otherSprite)
     {
         auto other = otherSprite->getSprite();
 
-        sf::Vector2f centerFirst(_sprite.getPosition().x + (_sprite.getLocalBounds().width / 2),
-                                 _sprite.getPosition().y + (_sprite.getLocalBounds().height / 2));
+        auto firstObjBound = _sprite.getGlobalBounds();
+        auto secondObjBound = other->getGlobalBounds();
 
-        sf::Vector2f centerSecond(other->getPosition().x + (other->getLocalBounds().width / 2),
-                                  other->getPosition().y + (other->getLocalBounds().height / 2));
+        sf::Vector2f centerFirst(firstObjBound.left + (firstObjBound.width / 2),
+                                 firstObjBound.top + (firstObjBound.height / 2));
+
+        sf::Vector2f centerSecond(secondObjBound.left + (secondObjBound.width / 2),
+                                  secondObjBound.top + (secondObjBound.height / 2));
 
 
         sf::Vector2f distance(centerFirst - centerSecond);

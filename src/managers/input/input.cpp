@@ -19,6 +19,11 @@ void input::execute(sf::Event &event, states active)
             }
     }
 
+void input::setFunction(std::function<void()> func)
+    {
+        _onInput = func;
+    }
+
 sf::Keyboard::Key input::getInput() const
     {
         return _input;

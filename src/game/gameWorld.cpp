@@ -13,11 +13,13 @@ gameWorld::gameWorld()
         _level = new level(64, 32);
         _level->load("assets/levels/level_01.txt");
 
-		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
-		_ball->initialize(sf::Vector2f(0, -50));
-		_ball->setPosition(globals::_stateMachine.getWindow()->getSize().x / 2, globals::_stateMachine.getWindow()->getSize().y);
+        sf::Vector2u windowSize = globals::_stateMachine.getWindow()->getSize();
 
-		_player = new player(globals::_stateMachine.getWindow()->getSize(), sf::Vector2f(0, 0));
+		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
+		_ball->initialize(sf::Vector2f(0, 150));
+		_ball->setPosition(windowSize.x / 2, windowSize.y - 100);
+
+		_player = new player(windowSize, sf::Vector2f(windowSize.x / 2, windowSize.y - 50));
 
 		_entities.push_back(_player);
 		_entities.push_back(_ball);
@@ -39,6 +41,8 @@ void gameWorld::update(sf::Time deltaTime)
 						_ball->collide(block);
 					}
 			}
+
+        _ball->collide(_player);
     }
 
 void gameWorld::render(sf::RenderWindow &app)

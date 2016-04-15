@@ -19,6 +19,14 @@ level::level(unsigned int blockSizeX, unsigned int blockSizeY)
 		globals::_eventManager.subscribe(this, BALL_HIT_BLOCK);
     }
 
+void level::initialize()
+    {
+        for (auto &ent : _blocks)
+            {
+                ent->setAlive(true);
+            }
+    }
+
 void level::load(const std::string &levelFilePath)
     {
         std::ifstream read(levelFilePath);
@@ -80,6 +88,8 @@ void level::load(const std::string &levelFilePath)
                 delete _blocks[currentBlockInArr];
                 _blocks[currentBlockInArr] = nullptr;
             }
+
+        initialize();
     }
 
 std::vector<block*> *level::getBlocks()

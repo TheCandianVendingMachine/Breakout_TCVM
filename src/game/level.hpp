@@ -24,6 +24,8 @@ class level : public observer
             level();
             level(unsigned int blockSizeX, unsigned int blockSizeY);
 
+            void initialize();
+
             void load(const std::string &levelFilePath);
 
             std::vector<block*> *getBlocks();

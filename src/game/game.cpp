@@ -16,12 +16,22 @@ void game::initializeSounds()
 
 void game::initializeTextures()
     {
+        globals::_textureManager.add("assets/textures/NO_TEXTURE.png", "defaultTexture");
+        globals::_textureManager.setDefaultResource("defaultTexture");
+        
         globals::_textureManager.add("assets/textures/block.png", "blockTexture");
         globals::_textureManager.add("assets/textures/ball.png", "ballTexture");
+        globals::_textureManager.add("assets/textures/paddle.png", "playerTexture");
     }
 
 void game::initializeControls()
-    {}
+    {
+        globals::_keyboardManager.add("playerMovementLeftActive", sf::Keyboard::Left, true, GAME_STATE);
+        globals::_keyboardManager.add("playerMovementLeftDeActive", sf::Keyboard::Left, false, GAME_STATE);
+
+        globals::_keyboardManager.add("playerMovementRightActive", sf::Keyboard::Right, true, GAME_STATE);
+        globals::_keyboardManager.add("playerMovementRightDeActive", sf::Keyboard::Right, false, GAME_STATE);
+    }
 
 void game::initialize()
     {

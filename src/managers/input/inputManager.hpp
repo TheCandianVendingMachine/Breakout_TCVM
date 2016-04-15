@@ -2,7 +2,7 @@
 // manages inputs. Can manage mosue and keyboard input
 #pragma once
 
-#include <vector>
+#include <unordered_map>
 #include <functional>
 
 #include <SFML/Window/Keyboard.hpp>
@@ -12,11 +12,15 @@
 class inputManager
     {
         private:
-            std::vector<input> _inputs;
+            std::unordered_map<std::string, input> _inputs;
 
         public:
-            void add(sf::Keyboard::Key key, std::function<void()> onInput, bool onPress, states activeState);
-            void remove(sf::Keyboard::Key key, states state);
+            void add(const std::string &name, sf::Keyboard::Key key, bool onPress, states activeState);
+            void add(const std::string &name, sf::Keyboard::Key key, std::function<void()> onInput, bool onPress, states activeState);
+
+            void changeFunction(const std::string &name, std::function<void()> func);
+
+            void remove(const std::string &name);
 
             void handleInput(sf::Event &event, states currentState);
 

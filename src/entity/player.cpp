@@ -5,8 +5,15 @@
 player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(200)
     {
 		_windowSize = windowSize;
-        _sprite.setTexture(*globals::_textureManager.get("playerTexture"));
         _startPos = startPos;
+
+        _sprite.setTexture(*globals::_textureManager.get("playerTexture", true));
+
+        globals::_keyboardManager.changeFunction("playerMovementLeftActive", [this] () { _impulse.x = -_speed; });
+        globals::_keyboardManager.changeFunction("playerMovementLeftDeActive", [this] () { _impulse.x = 0; });
+
+        globals::_keyboardManager.changeFunction("playerMovementRightActive", [this] () { _impulse.x = _speed; });
+        globals::_keyboardManager.changeFunction("playerMovementRightDeActive", [this] () { _impulse.x = 0; });
 
         initialize();
     }
@@ -29,4 +36,14 @@ void player::update(sf::Time deltaTime)
             }
 
         _sprite.move(_impulse * deltaTime.asSeconds());
+
+        /* make sure the paddle can't leave the window */
+        if (_sprite.getPosition().x + (_sprite.getLocalBounds().width) > _windowSize.x)
+            {
+                _sprite.setPosition(_windowSize.x - _sprite.getLocalBounds().width, _sprite.getPosition().y);
+            }
+        else if (_sprite.getPosition().x < 0)
+            {
+                _sprite.setPosition(0, _sprite.getPosition().y);
+            }
     }

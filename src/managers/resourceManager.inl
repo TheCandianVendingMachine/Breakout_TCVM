@@ -1,10 +1,18 @@
+#include "resourceManager.hpp"
 template<typename T>
-T *resourceManager<T>::get(const std::string &resourceName)
+T *resourceManager<T>::get(const std::string &resourceName, bool getDefaultTexture)
     {
-        auto it = m_textures.find(resourceName);
-        if (it != m_textures.end())
+        auto it = _resources.find(resourceName);
+        if (it != _resources.end())
             {
                 return it->second.get();
+            }
+        else if (getDefaultTexture)
+            {
+                if (!_defaultResource.empty())
+                    {
+                        return get(_defaultResource, false);
+                    }
             }
 
         return nullptr;
@@ -13,7 +21,7 @@ T *resourceManager<T>::get(const std::string &resourceName)
 template<typename T>
 T *resourceManager<T>::add(const std::string &filepath, const std::string &resourceName)
     {
-        T *newResource = get(resourceName);
+        T *newResource = get(resourceName, false);
         if (newResource)
             {
                 return newResource;
@@ -22,9 +30,15 @@ T *resourceManager<T>::add(const std::string &filepath, const std::string &resou
         newResource = new T;
         if (newResource->loadFromFile(filepath))
             {
-                m_textures[resourceName] = std::make_shared<T>(*newResource);
-                return m_textures[resourceName].get();
+                _resources[resourceName] = std::make_shared<T>(*newResource);
+                return _resources[resourceName].get();
             }
             
         return nullptr;
+    }
+
+template<typename T>
+void resourceManager<T>::setDefaultResource(const std::string &resourceName)
+    {
+        _defaultResource = resourceName;
     }

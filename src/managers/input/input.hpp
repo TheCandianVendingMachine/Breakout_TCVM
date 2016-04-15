@@ -20,8 +20,11 @@ class input
             states _activeState;
 
         public:
+            input() = default;
             input(sf::Keyboard::Key key, std::function<void()> onInput, bool onPress, states activeState);
             void execute(sf::Event &event, states active);
+
+            void setFunction(std::function<void()> func);
 
             sf::Keyboard::Key getInput() const;
             states getState() const;
