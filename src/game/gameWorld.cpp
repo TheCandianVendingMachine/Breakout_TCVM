@@ -1,12 +1,13 @@
 #include "gameWorld.hpp"
+
 #include "../entity/entity.hpp"
 #include "../entity/block.hpp"
 #include "../entity/player.hpp"
 #include "../entity/ball.hpp"
 
-#include <algorithm>
-
 #include "globals.hpp"
+
+#include <algorithm>
 
 gameWorld::gameWorld()
     {
@@ -17,7 +18,6 @@ gameWorld::gameWorld()
 
 		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
 		_ball->initialize(sf::Vector2f(0, 150));
-		_ball->setPosition(windowSize.x / 2, windowSize.y - 100);
 
 		_player = new player(windowSize, sf::Vector2f(windowSize.x / 2, windowSize.y - 50));
 
@@ -43,6 +43,20 @@ void gameWorld::update(sf::Time deltaTime)
 			}
 
         _ball->collide(_player);
+
+		if (_ball->getPosition().y > globals::_stateMachine.getWindow()->getSize().y)
+			{
+				_player->decreaseLives();
+				if (_player->playerDead())
+					{
+						globals::_stateMachine.popState();
+					}
+				else
+					{
+						_ball->initialize(sf::Vector2f(0, 150));
+						_player->initialize();
+					}
+			}
     }
 
 void gameWorld::render(sf::RenderWindow &app)

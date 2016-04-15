@@ -12,10 +12,15 @@ class player : public moveableEntity
 
             const float _speed;
 
+			int _lives;
+
         public:
 			player(sf::Vector2u windowSize, sf::Vector2f startPos);
             void initialize();
 
             void update(sf::Time deltaTime);
+
+			void decreaseLives();
+			bool playerDead() const;
 
     };

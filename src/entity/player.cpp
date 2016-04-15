@@ -15,6 +15,8 @@ player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(200)
         globals::_keyboardManager.changeFunction("playerMovementRightActive", [this] () { _impulse.x = _speed; });
         globals::_keyboardManager.changeFunction("playerMovementRightDeActive", [this] () { _impulse.x = 0; });
 
+		_lives = 3;
+
         initialize();
     }
 
@@ -47,3 +49,13 @@ void player::update(sf::Time deltaTime)
                 _sprite.setPosition(0, _sprite.getPosition().y);
             }
     }
+
+void player::decreaseLives()
+	{
+		_lives--;
+	}
+
+bool player::playerDead() const
+	{
+		return _lives <= 0;
+	}

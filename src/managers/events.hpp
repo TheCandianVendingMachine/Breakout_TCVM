@@ -21,7 +21,7 @@ namespace
 
 enum events
     {
-        BALL_HIT_BLOCK
+        BALL_HIT_BLOCK,
     };
 
 struct eventData
