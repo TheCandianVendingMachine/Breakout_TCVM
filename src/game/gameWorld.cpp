@@ -12,19 +12,27 @@
 gameWorld::gameWorld()
     {
         _level = new level(64, 32);
-        _level->load("assets/levels/level_01.txt");
+        _levelNumber = 0;
+
+        nextLevel();
 
         sf::Vector2u windowSize = globals::_stateMachine.getWindow()->getSize();
 
 		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
-		_ball->initialize(sf::Vector2f(0, 150));
-
 		_player = new player(windowSize, sf::Vector2f(windowSize.x / 2, windowSize.y - 50));
+
+        initialize();
 
 		_entities.push_back(_player);
 		_entities.push_back(_ball);
 
 		std::sort(_entities.begin(), _entities.end(), [](entity *entOne, entity *entTwo) {return entOne->getID() < entTwo->getID(); });
+    }
+
+void gameWorld::initialize()
+    {
+        _ball->initialize(sf::Vector2f(0, 150));
+        _player->initialize();
     }
 
 void gameWorld::update(sf::Time deltaTime)
@@ -47,16 +55,16 @@ void gameWorld::update(sf::Time deltaTime)
 		if (_ball->getPosition().y > globals::_stateMachine.getWindow()->getSize().y)
 			{
 				_player->decreaseLives();
-				if (_player->playerDead())
+				if (!_player->playerDead())
 					{
-						globals::_stateMachine.popState();
-					}
-				else
-					{
-						_ball->initialize(sf::Vector2f(0, 150));
-						_player->initialize();
+                        initialize();
 					}
 			}
+
+        if (_level->getLevelCleared())
+            {
+                globals::_eventManager.alert(eventData(0, LEVEL_CLEARED));
+            }
     }
 
 void gameWorld::render(sf::RenderWindow &app)
@@ -70,6 +78,12 @@ void gameWorld::render(sf::RenderWindow &app)
 			{
 				block->draw(app);
 			}
+    }
+
+void gameWorld::nextLevel()
+    {
+        std::string levelString = "level_" + std::to_string(++_levelNumber);
+        _level->load("assets/levels/" + levelString + ".txt");
     }
 
 void gameWorld::cleanup()

@@ -92,6 +92,19 @@ void level::load(const std::string &levelFilePath)
         initialize();
     }
 
+bool level::getLevelCleared()
+    {
+        for (auto &ent : _blocks)
+            {
+                if (ent->getAlive())
+                    {
+                        return false;
+                    }
+            }
+
+        return true;
+    }
+
 std::vector<block*> *level::getBlocks()
     {
         return &_blocks;

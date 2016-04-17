@@ -27,6 +27,7 @@ class level : public observer
             void initialize();
 
             void load(const std::string &levelFilePath);
+            bool getLevelCleared();
 
             std::vector<block*> *getBlocks();
 

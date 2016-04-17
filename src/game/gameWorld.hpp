@@ -23,11 +23,17 @@ class gameWorld
 
             std::vector<entity*> _entities;
 
+            unsigned int _levelNumber;
+
         public:
             gameWorld();
 
+            void initialize();
+
             void update(sf::Time deltaTime);
             void render(sf::RenderWindow &app);
+
+            void nextLevel();
 
 			void cleanup();
 			~gameWorld();

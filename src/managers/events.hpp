@@ -22,6 +22,8 @@ namespace
 enum events
     {
         BALL_HIT_BLOCK,
+        LEVEL_CLEARED,
+        LOSE_LIFE,
     };
 
 struct eventData

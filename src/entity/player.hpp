@@ -21,6 +21,8 @@ class player : public moveableEntity
             void update(sf::Time deltaTime);
 
 			void decreaseLives();
+            const int getLives() const;
+
 			bool playerDead() const;
 
     };

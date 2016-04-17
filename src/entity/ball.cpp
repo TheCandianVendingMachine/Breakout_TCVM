@@ -1,7 +1,7 @@
 #include "ball.hpp"
 #include "../game/globals.hpp"
 
-ball::ball(sf::Vector2u windowSize) : _speed(200.f)
+ball::ball(sf::Vector2u windowSize) : _speed(300.f)
     {
         _sprite.setTexture(*globals::_textureManager.get("ballTexture", true));
         _sprite.setOrigin(_sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2);
@@ -27,11 +27,20 @@ void ball::update(sf::Time deltaTime)
         if (spritePos.x + (spriteBound.width / 2) >= _windowSize.x || spritePos.x - (spriteBound.width / 2) <= 0)
             {
                 _impulse.x = -_impulse.x;
+                if (spritePos.x < (_windowSize.x / 2))
+                    {
+                        _sprite.setPosition((spriteBound.width / 2), _sprite.getPosition().y);
+                    }
+                else
+                    {
+                        _sprite.setPosition(_windowSize.x - (spriteBound.width / 2), _sprite.getPosition().y);
+                    }
             }
 
         if (spritePos.y - (spriteBound.height / 2) <= 0)
             {
                 _impulse.y = -_impulse.y;
+                _sprite.setPosition(_sprite.getPosition().x, (spriteBound.height / 2));
             }
     }
 

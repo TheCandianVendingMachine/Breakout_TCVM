@@ -2,7 +2,7 @@
 #include "../game/globals.hpp"
 #include <SFML/Graphics.hpp>
 
-player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(200)
+player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(250.f)
     {
 		_windowSize = windowSize;
         _startPos = startPos;
@@ -53,9 +53,15 @@ void player::update(sf::Time deltaTime)
 void player::decreaseLives()
 	{
 		_lives--;
+        globals::_eventManager.alert(eventData(_lives, LOSE_LIFE));
 	}
+
+const int player::getLives() const
+    {
+        return _lives;
+    }
 
 bool player::playerDead() const
 	{
-		return _lives <= 0;
+		return _lives < 0;
 	}

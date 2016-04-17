@@ -16,12 +16,14 @@ void game::initializeSounds()
 
 void game::initializeTextures()
     {
-        //globals::_textureManager.add("assets/textures/NO_TEXTURE.png", "defaultTexture");
-        //globals::_textureManager.setDefaultResource("defaultTexture");
+        globals::_textureManager.add("assets/textures/NO_TEXTURE.png", "defaultTexture");
+        globals::_textureManager.setDefaultResource("defaultTexture");
         
         globals::_textureManager.add("assets/textures/block.png", "blockTexture");
         globals::_textureManager.add("assets/textures/ball.png", "ballTexture");
         globals::_textureManager.add("assets/textures/paddle.png", "playerTexture");
+
+        globals::_fontManager.add("assets/textures/font/Squares_Bold_Free.otf", "gameFont");
     }
 
 void game::initializeControls()

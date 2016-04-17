@@ -12,18 +12,19 @@
 #include "../managers/eventManager.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
 class globals
     {
         public:
             static eventManager _eventManager;
-
-            static stateMachine _stateMachine;
-
-            static resourceManager<sf::Texture> _textureManager;
-
             static inputManager _keyboardManager;
 
+            static resourceManager<sf::Texture> _textureManager;
+            static resourceManager<sf::Font> _fontManager;
+
+            static stateMachine _stateMachine;
             static states _gameStates;
+
     };
