@@ -19,7 +19,7 @@ gameWorld::gameWorld()
         sf::Vector2u windowSize = globals::_stateMachine.getWindow()->getSize();
 
 		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
-		_player = new player(windowSize, sf::Vector2f(windowSize.x / 2, windowSize.y - 50));
+		_player = new player(windowSize, sf::Vector2f(windowSize.x / 2.f, windowSize.y - 50.f));
 
         initialize();
 

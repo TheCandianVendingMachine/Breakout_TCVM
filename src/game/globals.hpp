@@ -9,7 +9,7 @@
 
 #include "../managers/input/inputManager.hpp"
 
-#include "../managers/eventManager.hpp"
+#include "../managers/events/eventManager.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>

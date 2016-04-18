@@ -40,7 +40,7 @@ sf::Text *clickableButton::getText()
         return &_text;
     }
 
-const std::string &clickableButton::getString()
+const std::string clickableButton::getString()
     {
         return _text.getString();
     }

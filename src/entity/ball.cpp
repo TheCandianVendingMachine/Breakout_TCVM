@@ -14,7 +14,7 @@ ball::ball(sf::Vector2u windowSize) : _speed(300.f)
 void ball::initialize(sf::Vector2f impulse)
     {
         _impulse = impulse;
-		setPosition(_windowSize.x / 2, _windowSize.y - 200);
+		setPosition(_windowSize.x / 2.f, _windowSize.y - 200.f);
     }
 
 void ball::update(sf::Time deltaTime)

@@ -22,7 +22,7 @@ class clickableButton : public button
             void setFunction(std::function<void()> onButtonPress);
 
             sf::Text *getText();
-            const std::string &getString();
+            const std::string getString();
 
             void render(sf::RenderWindow &app);
             void update();

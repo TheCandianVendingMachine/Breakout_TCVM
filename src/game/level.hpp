@@ -8,7 +8,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "../managers/observer.hpp"
+#include "../managers/events/observer.hpp"
 
 class block;
 

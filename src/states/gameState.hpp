@@ -5,14 +5,18 @@
 #include "state.hpp"
 
 #include "../game/gameWorld.hpp"
-#include "../managers/observer.hpp"
+#include "../managers/events/observer.hpp"
 #include "../utilities/countdown.hpp"
+
+#include "../managers/score/scoreManager.hpp"
 
 #include <SFML/Graphics/Text.hpp>
 
 class gameState : public state, public observer
     {
         private:
+            scoreManager _scoreManager;
+
             gameWorld _world;
             countdown _timer;
 
@@ -23,6 +27,8 @@ class gameState : public state, public observer
             const std::string _livesPrefix;
             sf::Text _livesText;
             sf::Text _gameOverText;
+
+            sf::Text _scoreText;
 
         public:
             gameState();
