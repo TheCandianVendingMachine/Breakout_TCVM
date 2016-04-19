@@ -1,5 +1,6 @@
 #include "ball.hpp"
 #include "../game/globals.hpp"
+#include "../utilities/collision.hpp"
 
 ball::ball(sf::Vector2u windowSize) : _speed(300.f)
     {
@@ -46,27 +47,18 @@ void ball::update(sf::Time deltaTime)
 
 bool ball::collide(entity *otherSprite)
     {
-        auto other = otherSprite->getSprite();
-
-        auto firstObjBound = _sprite.getGlobalBounds();
-        auto secondObjBound = other->getGlobalBounds();
-
-        sf::Vector2f centerFirst(firstObjBound.left + (firstObjBound.width / 2),
-                                 firstObjBound.top + (firstObjBound.height / 2));
-
-        sf::Vector2f centerSecond(secondObjBound.left + (secondObjBound.width / 2),
-                                  secondObjBound.top + (secondObjBound.height / 2));
-
-
-        sf::Vector2f distance(centerFirst - centerSecond);
-        sf::Vector2f minDistance((_sprite.getLocalBounds().width / 2) + (other->getLocalBounds().width / 2),
-                                 (_sprite.getLocalBounds().height / 2) + (other->getLocalBounds().height / 2));
-
-        // if ball collides with a sprite, bounce off
-        if (abs(distance.x) < minDistance.x && abs(distance.y) < minDistance.y)
+        if (clsn::hasCollided(this, otherSprite))
             {
-                sf::Vector2f overlap(distance.x > 0 ? minDistance.x - distance.x : -minDistance.x - distance.x,
-                                     distance.y > 0 ? minDistance.y - distance.y : -minDistance.y - distance.y);
+                auto firstObjBound = _sprite.getGlobalBounds();
+                auto secondObjBound = otherSprite->getSprite()->getGlobalBounds();
+
+                sf::Vector2f centerFirst(firstObjBound.left + (firstObjBound.width / 2),
+                                         firstObjBound.top + (firstObjBound.height / 2));
+
+                sf::Vector2f centerSecond(secondObjBound.left + (secondObjBound.width / 2),
+                                          secondObjBound.top + (secondObjBound.height / 2));
+
+                sf::Vector2f overlap = clsn::getOverlap(this, otherSprite);
 
                 // find the new angle of bounce using trig
                 float angle = std::atan2(centerSecond.y - centerFirst.y, centerSecond.x - centerFirst.x);

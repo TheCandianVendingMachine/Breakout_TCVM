@@ -12,7 +12,8 @@ class entity
                 {
                     PLAYER,
                     BALL,
-                    BLOCK
+                    BLOCK,
+                    POWER_UP,
                 };
 
         protected:

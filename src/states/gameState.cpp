@@ -113,6 +113,10 @@ void gameState::alert(eventData data)
                         }
                     _scoreManager.incrementScore("blockScore");
                     break;
+                case POWERUP_GAINED:
+                    _scoreManager.getScore("blockScore")->setIncrementAmount(5);
+                    _scoreManager.incrementScore("blockScore");
+                    break;
                 default:
                     break;
             }

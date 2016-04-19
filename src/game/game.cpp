@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../states/gameState.hpp"
+#include "../utilities/randomizer.hpp"
 
 void game::initializeWindow()
     {
@@ -23,7 +24,12 @@ void game::initializeTextures()
         globals::_textureManager.add("assets/textures/ball.png", "ballTexture");
         globals::_textureManager.add("assets/textures/paddle.png", "playerTexture");
 
+        globals::_textureManager.add("assets/textures/powerups/powerupHealth.png", "powerupHealth");
+        globals::_textureManager.add("assets/textures/powerups/powerupLargePaddle.png", "powerupLargePaddle");
+        globals::_textureManager.add("assets/textures/powerups/powerupSmallPaddle.png", "powerupSmallPaddle");
+
         globals::_fontManager.add("assets/textures/font/Squares_Bold_Free.otf", "gameFont");
+        globals::_fontManager.setDefaultResource("gameFont");
     }
 
 void game::initializeControls()
@@ -44,6 +50,8 @@ void game::initialize()
 
         globals::_stateMachine.setWindow(app);
         globals::_stateMachine.queueState(new gameState);
+
+        rndm::initRandom();
     }
 
 void game::cleanup()

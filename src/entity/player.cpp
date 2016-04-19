@@ -1,5 +1,6 @@
 #include "player.hpp"
 #include "../game/globals.hpp"
+#include "../entity/powerup.hpp"
 #include <SFML/Graphics.hpp>
 
 player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(250.f)
@@ -7,7 +8,10 @@ player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(250.f)
 		_windowSize = windowSize;
         _startPos = startPos;
 
+        _entID = PLAYER;
+
         _sprite.setTexture(*globals::_textureManager.get("playerTexture", true));
+        _defaultSize = sf::Vector2f(_sprite.getGlobalBounds().width, _sprite.getGlobalBounds().height);
 
         globals::_keyboardManager.changeFunction("playerMovementLeftActive", [this] () { _impulse.x = -_speed; });
         globals::_keyboardManager.changeFunction("playerMovementLeftDeActive", [this] () { _impulse.x = 0; });
@@ -17,36 +21,70 @@ player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(250.f)
 
 		_lives = 3;
 
+        globals::_eventManager.subscribe(this, POWERUP_GAINED);
+
         initialize();
     }
 
 void player::initialize()
     {
+        _currentPower = nullptr;
         _sprite.setPosition(_startPos - sf::Vector2f(_sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2));
         _impulse = sf::Vector2f(0, 0);
     }
 
 void player::update(sf::Time deltaTime)
     {
-        if (_sprite.getPosition().x + _sprite.getLocalBounds().width > _windowSize.x)
-            {
-                _sprite.setPosition(_sprite.getPosition().x, _windowSize.x - _sprite.getLocalBounds().height);
-            }
-        else if (_sprite.getPosition().y < 0)
-            {
-                _sprite.setPosition(_sprite.getPosition().x, 0);
-            }
-
         _sprite.move(_impulse * deltaTime.asSeconds());
 
         /* make sure the paddle can't leave the window */
-        if (_sprite.getPosition().x + (_sprite.getLocalBounds().width) > _windowSize.x)
+        if (_sprite.getPosition().x + (_sprite.getGlobalBounds().width) > _windowSize.x)
             {
-                _sprite.setPosition(_windowSize.x - _sprite.getLocalBounds().width, _sprite.getPosition().y);
+                _sprite.setPosition(_windowSize.x - _sprite.getGlobalBounds().width, _sprite.getPosition().y);
             }
         else if (_sprite.getPosition().x < 0)
             {
                 _sprite.setPosition(0, _sprite.getPosition().y);
+            }
+
+        if (_currentPower)
+            {
+                if (_currentPower->countdownDone())
+                    {
+                        _currentPower = nullptr;
+                    }
+            }
+        else if (_sprite.getGlobalBounds().width != _defaultSize.x)
+            {
+                _sprite.scale(_defaultSize.x / _sprite.getGlobalBounds().width, 1);
+            }
+    }
+
+void player::alert(eventData data)
+    {
+        switch (data._data.powerDat->getType())
+            {
+                case powerup::WIDE_PADDLE:
+                    {
+                        float spriteSize = _sprite.getLocalBounds().width;
+                        _sprite.scale((spriteSize + 50) / spriteSize, 1);
+                        _currentPower = data._data.powerDat;
+                    }
+                    break;
+                case powerup::SHORT_PADDLE:
+                    {
+                        float spriteSize = _sprite.getLocalBounds().width;
+                        _sprite.scale((spriteSize - 50) / spriteSize, 1);
+                        _currentPower = data._data.powerDat;
+                    }
+                    break;
+                case powerup::EXTRA_LIFE:
+                    _lives++;
+                    globals::_eventManager.alert(eventData(_lives, LOSE_LIFE));
+                    break;
+                default:
+                    _currentPower = nullptr;
+                    break;
             }
     }
 
@@ -65,3 +103,8 @@ bool player::playerDead() const
 	{
 		return _lives < 0;
 	}
+
+player::~player()
+    {
+        globals::_eventManager.unsubscribe(this, POWERUP_GAINED);
+    }

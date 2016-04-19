@@ -11,11 +11,13 @@
 #include "../managers/events/observer.hpp"
 
 class block;
+class powerup;
 
 class level : public observer
     {
         private:
             std::vector<block*> _blocks;
+            std::vector<powerup> _powerups;
 
             unsigned int _blockSizeX;
             unsigned int _blockSizeY;
@@ -30,6 +32,7 @@ class level : public observer
             bool getLevelCleared();
 
             std::vector<block*> *getBlocks();
+            std::vector<powerup> *getPowerups();
 
 			void alert(eventData data);
 

@@ -24,7 +24,7 @@ class score
             void setScore(int amount);
 
             int getScore() const;
-            const std::string &getScoreAsString();
+            const std::string getScoreAsString();
 
             sf::Text &getText();
 

@@ -4,6 +4,7 @@
 #include "../entity/block.hpp"
 #include "../entity/player.hpp"
 #include "../entity/ball.hpp"
+#include "../entity/powerup.hpp"
 
 #include "globals.hpp"
 
@@ -50,6 +51,20 @@ void gameWorld::update(sf::Time deltaTime)
 					}
 			}
 
+        for (auto &power : *_level->getPowerups())
+            {
+                power.update(deltaTime);
+                if (power.collide(_player))
+                    {
+                        power.setAlive(false);
+                    }
+
+                if (power.getPosition().y > globals::_stateMachine.getWindow()->getSize().y)
+                    {
+                        power.setAlive(false);
+                    }
+            }
+
         _ball->collide(_player);
 
 		if (_ball->getPosition().y > globals::_stateMachine.getWindow()->getSize().y)
@@ -78,6 +93,11 @@ void gameWorld::render(sf::RenderWindow &app)
 			{
 				block->draw(app);
 			}
+
+        for (auto &power : *_level->getPowerups())
+            {
+                power.draw(app);
+            }
     }
 
 void gameWorld::nextLevel()

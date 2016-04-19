@@ -36,7 +36,7 @@ int score::getScore() const
         return _score;
     }
 
-const std::string &score::getScoreAsString()
+const std::string score::getScoreAsString()
     {
         return _text.getString();
     }

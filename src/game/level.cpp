@@ -2,7 +2,11 @@
 #include <fstream>
 
 #include "../entity/block.hpp"
+#include "../entity/powerup.hpp"
+
 #include "../utilities/strFuncs.hpp"
+#include "../utilities/randomizer.hpp"
+
 #include "../game/globals.hpp"
 
 level::level()
@@ -110,26 +114,34 @@ std::vector<block*> *level::getBlocks()
         return &_blocks;
     }
 
+std::vector<powerup> *level::getPowerups()
+    {
+        return &_powerups;
+    }
+
 void level::alert(eventData data)
 	{
-		for (auto &ent : _blocks)
-			{
-				switch (data._dataType)
-					{
-						case INTEGER:
+        switch (data._event)
+            {
+                case BALL_HIT_BLOCK:
+                    {
+						auto it = std::find_if(_blocks.begin(), _blocks.end(),
+							[data](block *ent) { return ent->getID() == data._data.intDat; });
+						if (it != _blocks.end())
 							{
-								auto it = std::find_if(_blocks.begin(), _blocks.end(),
-									[data](block *ent) { return ent->getID() == data._data.intDat; });
-								if (it != _blocks.end())
-									{
-										(*it)->setAlive(false);
-									}
+								(*it)->setAlive(false);
 							}
-							break;
-						default:
-							break;
+
+                        // (1/X)% chance of spawning a power up on block hit
+                        bool powerSpawn = (rndm::random(0, 10) == 1);
+                        if (powerSpawn)
+                            {
+                                _powerups.emplace_back((*it)->getPosition());
+                            }
 					}
-			}
+                default:
+                    break;
+            }
 	}
 
 
