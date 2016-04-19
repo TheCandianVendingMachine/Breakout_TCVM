@@ -36,3 +36,8 @@ void block::draw(sf::RenderWindow &app)
 
 void block::update(sf::Time deltaTime)
     {}
+
+block & block::operator=(const block & other)
+	{
+		return *this;
+	}

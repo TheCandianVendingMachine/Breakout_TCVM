@@ -19,16 +19,11 @@ level::level(unsigned int blockSizeX, unsigned int blockSizeY)
     {
         _blockSizeX = blockSizeX;
         _blockSizeY = blockSizeY;
-
-		globals::_eventManager.subscribe(this, BALL_HIT_BLOCK);
     }
 
 void level::initialize()
     {
-        for (auto &ent : _blocks)
-            {
-                ent->setAlive(true);
-            }
+		globals::_eventManager.subscribe(this, BALL_HIT_BLOCK);
     }
 
 void level::load(const std::string &levelFilePath)
@@ -63,12 +58,12 @@ void level::load(const std::string &levelFilePath)
                                             {
                                                 if (currentBlockInArr < _blocks.size())
                                                     {
-                                                        _blocks[currentBlockInArr++]->setPosition(currentTextPosX * (_blockSizeX + spacing), currentTextPosY * (_blockSizeY + spacing));
+                                                        _blocks[currentBlockInArr++].setPosition(currentTextPosX * (_blockSizeX + spacing), currentTextPosY * (_blockSizeY + spacing));
                                                     }
                                                 else
                                                     {
-                                                        _blocks.push_back(new block);
-                                                        _blocks[currentBlockInArr++]->setPosition(currentTextPosX * (_blockSizeX + spacing), currentTextPosY * (_blockSizeY + spacing));
+														_blocks.emplace_back();
+                                                        _blocks[currentBlockInArr++].setPosition(currentTextPosX * (_blockSizeX + spacing), currentTextPosY * (_blockSizeY + spacing));
                                                     }
                                             }
                                         else if (chr == '#')
@@ -89,22 +84,22 @@ void level::load(const std::string &levelFilePath)
                 read.close();
             }
 
-        for (unsigned int i = currentBlockInArr; i < _blocks.size(); i++)
+		for (auto it = _blocks.begin() + currentBlockInArr; it != _blocks.end();)
             {
-                delete _blocks[i];
-                _blocks[i] = nullptr;
+				it = _blocks.erase(it);
             }
 
-        _blocks.erase(std::remove(_blocks.begin(), _blocks.end(), nullptr), std::end(_blocks));
-
-        initialize();
+        for (auto &ent : _blocks)
+            {
+                ent.setAlive(true);
+            }
     }
 
 bool level::getLevelCleared()
     {
         for (auto &ent : _blocks)
             {
-                if (ent->getAlive())
+                if (ent.getAlive())
                     {
                         return false;
                     }
@@ -113,7 +108,7 @@ bool level::getLevelCleared()
         return true;
     }
 
-std::vector<block*> *level::getBlocks()
+std::vector<block> *level::getBlocks()
     {
         return &_blocks;
     }
@@ -130,17 +125,17 @@ void level::alert(eventData data)
                 case BALL_HIT_BLOCK:
                     {
 						auto it = std::find_if(_blocks.begin(), _blocks.end(),
-							[data](block *ent) { return ent->getID() == data._data.intDat; });
+							[data](block &ent) { return ent.getID() == data._data.intDat; });
 						if (it != _blocks.end())
 							{
-								(*it)->setAlive(false);
+								it->setAlive(false);
 							}
 
                         // (1/X)% chance of spawning a power up on block hit
                         bool powerSpawn = (rndm::random(0, 10) == 1);
                         if (powerSpawn)
                             {
-                                _powerups.emplace_back((*it)->getPosition());
+                                _powerups.emplace_back(it->getPosition());
                             }
 					}
                 default:
@@ -151,12 +146,6 @@ void level::alert(eventData data)
 
 void level::cleanup()
     {
-        for (auto &block : _blocks)
-            {
-                delete block;
-                block = nullptr;
-            }
-
 		globals::_eventManager.unsubscribe(this, BALL_HIT_BLOCK);
     }
 

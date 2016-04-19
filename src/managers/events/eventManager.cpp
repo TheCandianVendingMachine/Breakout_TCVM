@@ -3,7 +3,11 @@
 
 void eventManager::subscribe(observer *obv, events event)
     {
-        _observers[event].push_back(obv);
+		auto it = std::find(_observers[event].begin(), _observers[event].end(), obv);
+		if (it == _observers[event].end()) 
+			{
+				_observers[event].push_back(obv);
+			}
     }
 
 void eventManager::unsubscribe(observer *obv, events event)

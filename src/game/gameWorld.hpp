@@ -7,6 +7,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Time.hpp>
 
+#include <memory>
+
 #include "level.hpp"
 
 class entity;
@@ -16,10 +18,10 @@ class player;
 class gameWorld
     {
         private:
-            level *_level;
+            std::shared_ptr<level> _level;
 
-			ball *_ball;
-			player *_player;
+			std::shared_ptr<ball> _ball;
+			std::shared_ptr<player> _player;
 
             std::vector<entity*> _entities;
 

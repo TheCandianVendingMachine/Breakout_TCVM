@@ -12,20 +12,20 @@
 
 gameWorld::gameWorld()
     {
-        _level = new level(64, 32);
+        _level = std::make_shared<level>(level(64, 32));
         _levelNumber = 0;
 
         nextLevel();
 
         sf::Vector2u windowSize = globals::_stateMachine.getWindow()->getSize();
 
-		_ball = new ball(globals::_stateMachine.getWindow()->getSize());
-		_player = new player(windowSize, sf::Vector2f(windowSize.x / 2.f, windowSize.y - 50.f));
+		_ball = std::make_shared<ball>(ball(globals::_stateMachine.getWindow()->getSize()));
+		_player = std::make_shared<player>(player(windowSize, sf::Vector2f(windowSize.x / 2.f, windowSize.y - 50.f)));
 
         initialize();
 
-		_entities.push_back(_player);
-		_entities.push_back(_ball);
+		_entities.push_back(dynamic_cast<entity*>(&*_player));
+		_entities.push_back(dynamic_cast<entity*>(&*_ball));
 
 		std::sort(_entities.begin(), _entities.end(), [](entity *entOne, entity *entTwo) {return entOne->getID() < entTwo->getID(); });
     }
@@ -34,6 +34,7 @@ void gameWorld::initialize()
     {
         _ball->initialize(sf::Vector2f(0, 150));
         _player->initialize();
+		_level->initialize();
     }
 
 void gameWorld::update(sf::Time deltaTime)
@@ -45,16 +46,16 @@ void gameWorld::update(sf::Time deltaTime)
 
 		for (auto &block : *_level->getBlocks())
 			{
-				if (block->getAlive()) 
+				if (block.getAlive()) 
 					{
-						_ball->collide(block);
+						_ball->collide(dynamic_cast<entity*>(&block));
 					}
 			}
 
         for (auto &power : *_level->getPowerups())
             {
                 power.update(deltaTime);
-                if (power.collide(_player))
+                if (power.collide(dynamic_cast<entity*>(&*_player)))
                     {
                         power.setAlive(false);
                     }
@@ -65,7 +66,7 @@ void gameWorld::update(sf::Time deltaTime)
                     }
             }
 
-        _ball->collide(_player);
+        _ball->collide(dynamic_cast<entity*>(&*_player));
 
 		if (_ball->getPosition().y > globals::_stateMachine.getWindow()->getSize().y)
 			{
@@ -91,7 +92,7 @@ void gameWorld::render(sf::RenderWindow &app)
 
 		for (auto &block : *_level->getBlocks())
 			{
-				block->draw(app);
+				block.draw(app);
 			}
 
         for (auto &power : *_level->getPowerups())
@@ -115,24 +116,7 @@ void gameWorld::nextLevel()
 
 void gameWorld::cleanup()
 	{
-		if (_ball)
-			{
-				delete _ball;
-				_ball = nullptr;
-			}
-
-		if (_player)
-			{
-				delete _player;
-				_player = nullptr;
-			}
-
-		if (_level)
-			{
-				_level->cleanup();
-				delete _level;
-				_level = nullptr;
-			}
+		_level->cleanup();
 	}
 
 gameWorld::~gameWorld()

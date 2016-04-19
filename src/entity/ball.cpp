@@ -4,6 +4,8 @@
 
 ball::ball(sf::Vector2u windowSize) : _speed(300.f)
     {
+		_entID = BALL;
+
         _sprite.setTexture(*globals::_textureManager.get("ballTexture", true));
         _sprite.setOrigin(_sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2);
 

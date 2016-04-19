@@ -24,4 +24,6 @@ class block : public entity
 
             void update(sf::Time deltaTime);
 
+			block & operator=(const block &other);
+
     };

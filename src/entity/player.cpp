@@ -10,20 +10,10 @@ player::player(sf::Vector2u windowSize, sf::Vector2f startPos) : _speed(250.f)
 
         _entID = PLAYER;
 
-        _sprite.setTexture(*globals::_textureManager.get("playerTexture", true));
-        _defaultSize = sf::Vector2f(_sprite.getGlobalBounds().width, _sprite.getGlobalBounds().height);
-
-        globals::_keyboardManager.changeFunction("playerMovementLeftActive", [this] () { _impulse.x = -_speed; });
-        globals::_keyboardManager.changeFunction("playerMovementLeftDeActive", [this] () { _impulse.x = 0; });
-
-        globals::_keyboardManager.changeFunction("playerMovementRightActive", [this] () { _impulse.x = _speed; });
-        globals::_keyboardManager.changeFunction("playerMovementRightDeActive", [this] () { _impulse.x = 0; });
-
 		_lives = 3;
 
-        globals::_eventManager.subscribe(this, POWERUP_GAINED);
-
-        initialize();
+		_sprite.setTexture(*globals::_textureManager.get("playerTexture", true));
+		_defaultSize = sf::Vector2f(_sprite.getGlobalBounds().width, _sprite.getGlobalBounds().height);
     }
 
 void player::initialize()
@@ -31,6 +21,14 @@ void player::initialize()
         _currentPower = nullptr;
         _sprite.setPosition(_startPos - sf::Vector2f(_sprite.getLocalBounds().width / 2, _sprite.getLocalBounds().height / 2));
         _impulse = sf::Vector2f(0, 0);
+
+		globals::_keyboardManager.changeFunction("playerMovementLeftActive", [this]() { _impulse.x = -_speed; });
+		globals::_keyboardManager.changeFunction("playerMovementLeftDeActive", [this]() { _impulse.x = 0; });
+
+		globals::_keyboardManager.changeFunction("playerMovementRightActive", [this]() { _impulse.x = _speed; });
+		globals::_keyboardManager.changeFunction("playerMovementRightDeActive", [this]() { _impulse.x = 0; });
+
+		globals::_eventManager.subscribe(this, POWERUP_GAINED);
     }
 
 void player::update(sf::Time deltaTime)
