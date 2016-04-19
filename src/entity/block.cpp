@@ -12,6 +12,8 @@ block::block()
 				_sprite.setColor(sf::Color::Green);
 			}
 		_entID = BLOCK;
+
+        _alive = true;
     }
 
 const bool block::getAlive() const

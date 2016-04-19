@@ -100,6 +100,13 @@ void gameWorld::render(sf::RenderWindow &app)
             }
     }
 
+void gameWorld::setLevel(int levelNum)
+    {
+        _levelNumber = levelNum;
+        std::string levelString = "level_" + std::to_string(levelNum);
+        _level->load("assets/levels/" + levelString + ".txt");
+    }
+
 void gameWorld::nextLevel()
     {
         std::string levelString = "level_" + std::to_string(++_levelNumber);

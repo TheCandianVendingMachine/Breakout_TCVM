@@ -11,6 +11,8 @@ gameState::gameState() : _livesPrefix("Lives Left: ")
 
 void gameState::initialize()
     {
+        _world.setLevel(1);
+
         const int heightFromBottomOfScreen = 35;
 
         _gameOver = false;
@@ -40,6 +42,7 @@ void gameState::initialize()
 
         globals::_eventManager.subscribe(this, LEVEL_CLEARED);
         globals::_eventManager.subscribe(this, BALL_HIT_BLOCK);
+        globals::_eventManager.subscribe(this, POWERUP_GAINED);
         globals::_eventManager.subscribe(this, LOSE_LIFE);
     }
 
@@ -126,6 +129,7 @@ void gameState::cleanup()
     {
         globals::_eventManager.unsubscribe(this, LEVEL_CLEARED);
         globals::_eventManager.unsubscribe(this, LOSE_LIFE);
+        globals::_eventManager.unsubscribe(this, POWERUP_GAINED);
         globals::_eventManager.unsubscribe(this, BALL_HIT_BLOCK);
         _world.cleanup();
     }

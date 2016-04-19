@@ -33,6 +33,8 @@ void level::initialize()
 
 void level::load(const std::string &levelFilePath)
     {
+        _powerups.clear();
+
         std::ifstream read(levelFilePath);
         std::string line = "";
 
@@ -83,15 +85,17 @@ void level::load(const std::string &levelFilePath)
                                 currentTextPosX = 0;
                             }
                     }
-            }
 
-        read.close();
+                read.close();
+            }
 
         for (unsigned int i = currentBlockInArr; i < _blocks.size(); i++)
             {
-                delete _blocks[currentBlockInArr];
-                _blocks[currentBlockInArr] = nullptr;
+                delete _blocks[i];
+                _blocks[i] = nullptr;
             }
+
+        _blocks.erase(std::remove(_blocks.begin(), _blocks.end(), nullptr), std::end(_blocks));
 
         initialize();
     }

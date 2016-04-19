@@ -33,6 +33,7 @@ class gameWorld
             void update(sf::Time deltaTime);
             void render(sf::RenderWindow &app);
 
+            void setLevel(int levelNum);
             void nextLevel();
 
 			void cleanup();
