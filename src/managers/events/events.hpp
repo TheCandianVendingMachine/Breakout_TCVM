@@ -29,6 +29,7 @@ enum events
         LEVEL_CLEARED,
         LOSE_LIFE,
         POWERUP_GAINED,
+        ALL_LEVELS_CLEARED,
     };
 
 struct eventData

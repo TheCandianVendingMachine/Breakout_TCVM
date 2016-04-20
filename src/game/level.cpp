@@ -83,6 +83,10 @@ void level::load(const std::string &levelFilePath)
 
                 read.close();
             }
+        else
+            {
+                globals::_eventManager.alert(eventData(0, ALL_LEVELS_CLEARED));
+            }
 
 		for (auto it = _blocks.begin() + currentBlockInArr; it != _blocks.end();)
             {

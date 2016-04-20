@@ -46,6 +46,7 @@ void gameState::initialize()
         globals::_eventManager.subscribe(this, BALL_HIT_BLOCK);
         globals::_eventManager.subscribe(this, POWERUP_GAINED);
         globals::_eventManager.subscribe(this, LOSE_LIFE);
+        globals::_eventManager.subscribe(this, ALL_LEVELS_CLEARED);
     }
 
 void gameState::render()
@@ -124,6 +125,11 @@ void gameState::alert(eventData data)
                     _scoreManager.getScore("blockScore")->setIncrementAmount(5);
                     _scoreManager.incrementScore("blockScore");
                     break;
+                case ALL_LEVELS_CLEARED:
+                    globals::_stateMachine.queueState(new menuState);
+                    globals::_stateMachine.popState();
+                    globals::_highscoreManager.addScore(_scoreManager.getScore("blockScore")->getScore());
+                    break;
                 default:
                     break;
             }
@@ -135,6 +141,7 @@ void gameState::cleanup()
         globals::_eventManager.unsubscribe(this, LOSE_LIFE);
         globals::_eventManager.unsubscribe(this, POWERUP_GAINED);
         globals::_eventManager.unsubscribe(this, BALL_HIT_BLOCK);
+        globals::_eventManager.unsubscribe(this, ALL_LEVELS_CLEARED);
         _world.cleanup();
     }
 

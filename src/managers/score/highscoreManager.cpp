@@ -1,6 +1,7 @@
 #include "highscoreManager.hpp"
 #include <fstream>
 #include <algorithm>
+#include <functional>
 
 highscoreManager::highscoreManager() :_highscoreFilepath("assets/highscore/highscore.txt")
     {
@@ -18,7 +19,7 @@ highscoreManager::highscoreManager() :_highscoreFilepath("assets/highscore/highs
 void highscoreManager::addScore(int score)
     {
         _highscores.push_back(score);
-        std::sort(_highscores.begin(), _highscores.end());
+        std::sort(_highscores.begin(), _highscores.end(), std::greater<int>());
 
         std::ofstream write(_highscoreFilepath);
         if (write.is_open())
