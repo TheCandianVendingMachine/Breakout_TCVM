@@ -9,10 +9,14 @@
 
 #include "../../states/states.hpp"
 
+template<typename T>
 class input
     {
         private:
-            sf::Keyboard::Key _input;
+            static constexpr sf::Event::EventType _release = (std::is_same<T, sf::Keyboard::Key>::value) ? sf::Event::KeyReleased : sf::Event::MouseButtonReleased;
+            static constexpr sf::Event::EventType _press = (std::is_same<T, sf::Keyboard::Key>::value) ? sf::Event::KeyPressed : sf::Event::MouseButtonPressed;
+
+            T _input;
 
             std::function<void()> _onInput;
             bool _onPress;
@@ -21,12 +25,14 @@ class input
 
         public:
             input() = default;
-            input(sf::Keyboard::Key key, std::function<void()> onInput, bool onPress, states activeState);
+            input(T key, std::function<void()> onInput, bool onPress, states activeState);
             void execute(sf::Event &event, states active);
 
             void setFunction(std::function<void()> func);
 
-            sf::Keyboard::Key getInput() const;
+            T getInput() const;
             states getState() const;
 
     };
+
+#include "input.inl"

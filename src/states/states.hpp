@@ -4,5 +4,6 @@
 
 enum states
     {
-        GAME_STATE
+        GAME_STATE,
+        MENU_STATE
     };

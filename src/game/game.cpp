@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "../states/gameState.hpp"
+#include "../states/menuState.hpp"
 #include "../utilities/randomizer.hpp"
 
 void game::initializeWindow()
@@ -39,6 +39,15 @@ void game::initializeControls()
 
         globals::_keyboardManager.add("playerMovementRightActive", sf::Keyboard::Right, true, GAME_STATE);
         globals::_keyboardManager.add("playerMovementRightDeActive", sf::Keyboard::Right, false, GAME_STATE);
+
+        globals::_keyboardManager.add("pauseGame", sf::Keyboard::Escape, [] () { globals::_stateMachine.pushState(new menuState); }, false, GAME_STATE);
+        globals::_keyboardManager.add("resumeGame", sf::Keyboard::Escape, [] () 
+            {
+                if (globals::_stateMachine.getStateUnderneath())
+                    {
+                        globals::_stateMachine.popState();
+                    }
+            }, false, MENU_STATE);
     }
 
 void game::initialize()
@@ -49,9 +58,13 @@ void game::initialize()
         initializeControls();
 
         globals::_stateMachine.setWindow(app);
-        globals::_stateMachine.queueState(new gameState);
+        globals::_stateMachine.queueState(new menuState);
 
         rndm::initRandom();
+
+        //globals::_highscoreManager.addScore(5);
+        //globals::_highscoreManager.addScore(3);
+        //globals::_highscoreManager.addScore(7);
     }
 
 void game::cleanup()

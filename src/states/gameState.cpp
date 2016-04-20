@@ -1,6 +1,8 @@
 #include "gameState.hpp"
 #include "../game/globals.hpp"
 
+#include "menuState.hpp"
+
 gameState::gameState() : _livesPrefix("Lives Left: ")
     {
         _state = GAME_STATE;
@@ -81,7 +83,9 @@ void gameState::update(sf::Time deltaTime)
             {
                 if (_timer.hasCountdownFinished())
                     {
+                        globals::_stateMachine.queueState(new menuState);
                         globals::_stateMachine.popState();
+                        globals::_highscoreManager.addScore(_scoreManager.getScore("blockScore")->getScore());
                     }
             }
     }

@@ -9,14 +9,15 @@
 
 #include "input.hpp"
 
+template<typename T>
 class inputManager
     {
         private:
-            std::unordered_map<std::string, input> _inputs;
+            std::unordered_map<std::string, input<T>> _inputs;
 
         public:
-            void add(const std::string &name, sf::Keyboard::Key key, bool onPress, states activeState);
-            void add(const std::string &name, sf::Keyboard::Key key, std::function<void()> onInput, bool onPress, states activeState);
+            void add(const std::string &name, T key, bool onPress, states activeState);
+            void add(const std::string &name, T key, std::function<void()> onInput, bool onPress, states activeState);
 
             void changeFunction(const std::string &name, std::function<void()> func);
 
@@ -25,3 +26,5 @@ class inputManager
             void handleInput(sf::Event &event, states currentState);
 
     };
+
+#include "inputManager.inl"

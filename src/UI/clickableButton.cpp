@@ -65,5 +65,6 @@ void clickableButton::update()
         if (_buttonClicked)
             {
                 _onButtonPress();
+                _buttonClicked = false;
             }
     }

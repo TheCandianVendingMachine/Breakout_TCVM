@@ -13,7 +13,7 @@ void button::_checkForMouse()
                 if (_bounds.contains(mousePosFloat))
                     {
                         _mouseOver = true;
-                        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !_buttonClicked)
                             {
                                 _buttonClicked = true;
                             }
