@@ -11,7 +11,7 @@
 
 #include "../managers/events/eventManager.hpp"
 
-#include "../managers/highscoreManager.hpp"
+#include "../managers/score/highscoreManager.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
